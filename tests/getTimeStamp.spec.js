@@ -31,13 +31,18 @@ describe('timestamp api', () => {
         expect(res).toStrictEqual({"unix":1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"})
     })
 
-    it.skip('An empty date parameter should return the current time in a JSON object with a unix key', () => {
+    it('An empty date parameter should return the current time in a JSON object with a unix key', () => {
         // given
         const req = {
             params: {}
         }
-        let res
+        const mockDate = new Date(1451001600000)
+        const spy = jest
+          .spyOn(global, 'Date')
+          .mockImplementation(() => mockDate)
+
         // when
+        let res
         getTimeStamp(req, {json: (data) => {res = data}})
 
         // expect
